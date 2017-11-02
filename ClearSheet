@@ -1,0 +1,8 @@
+Function ClearSheet(wkSheet As String)
+
+Application.ScreenUpdating = False
+
+Sheets(wkSheet).Cells.Select
+    Selection.Delete Shift:=xlUp
+
+End Function
