@@ -1,0 +1,8 @@
+Function getLastColumn(Worksheet As String) As Long
+
+    If WorksheetFunction.CountA(Cells) > 0 Then
+        'Search for any entry, by searching backwards by Columns.
+        getLastColumn = Worksheets(Worksheet).Cells.Find(What:="*", SearchOrder:=xlByColumns, SearchDirection:=xlPrevious).Column
+    End If
+
+End Function
