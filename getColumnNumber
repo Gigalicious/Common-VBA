@@ -1,0 +1,12 @@
+Function getColumnNumber(wkSheet As String, columnHeader As String) As Integer
+
+Application.ScreenUpdating = False
+    
+    For i = 1 To getLastColumn(wkSheet)
+        If (StrComp(Worksheets(wkSheet).Cells(1, i).Value, columnHeader, vbTextCompare) = 0) Then
+            getColumnNumber = CInt(i)
+        Exit For
+        End If
+    Next i
+
+End Function
