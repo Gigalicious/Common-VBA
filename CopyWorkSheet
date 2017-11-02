@@ -1,0 +1,21 @@
+Function CopyWorkSheet(wkSheet As String, ext As String) As String
+
+Dim wsSheet As Worksheet
+Dim returnSheetName As String
+
+Application.ScreenUpdating = False
+
+On Error Resume Next
+Set wsSheet = Sheets(Left(wkSheet + ext, 31))
+On Error GoTo 0
+If Not wsSheet Is Nothing Then
+    returnSheetName = wsSheet.Name
+Else
+    Sheets(wkSheet).Select
+    Sheets(wkSheet).Copy After:=Sheets(wkSheet)
+    ActiveSheet.Name = Left(wkSheet + ext, 31)
+    returnSheetName = ActiveSheet.Name
+End If
+
+CopyWorkSheet = returnSheetName
+End Function
