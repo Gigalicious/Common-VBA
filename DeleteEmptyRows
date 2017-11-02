@@ -1,0 +1,21 @@
+Function DeleteEmptyRows(wkSheet As String, sColumn As String)
+Dim i, a As Long
+
+Application.ScreenUpdating = False
+
+ThisWorkbook.Worksheets(wkSheet).Activate
+Application.ScreenUpdating = False
+
+With ThisWorkbook.Worksheets(wkSheet)
+    i = getColumNumber(wkSheet, sColumn)
+    
+    For a = getLastRow(wkSheet) To 2 Step -1
+        If (StrComp(.Cells(a, i).Value, "", vbTextCompare) = 0) Then
+            .Rows(CStr(a) + ":" + CStr(a)).Delete Shift:=xlUp
+        End If
+    Next a
+    
+End With
+Application.ScreenUpdating = True
+
+End Function
