@@ -1,0 +1,20 @@
+Function ColumnToNumberFormat(wkSheet As String, columnName As String)
+Dim colLetter As String
+
+Application.ScreenUpdating = False
+
+ActiveWorkbook.Worksheets(wkSheet).Activate
+
+With ActiveWorkbook.Worksheets(wkSheet)
+colLetter = columnLetter(getColumNumber(wkSheet, columnName))
+
+Range(colLetter + ":" + colLetter).Select
+
+    With Selection
+        Selection.NumberFormat = "0"
+        .Value = .Value
+    End With
+
+End With
+
+End Function
