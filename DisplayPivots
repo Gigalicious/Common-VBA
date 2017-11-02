@@ -1,0 +1,30 @@
+Function DisplayPivots(sourceSheet As String, pivotSheetName As String) As Integer
+
+Dim wsSheet As Worksheet
+Dim lastRow As String
+
+Application.ScreenUpdating = False
+
+On Error Resume Next
+Set wsSheet = Sheets(pivotSheetName)
+On Error GoTo 0
+If Not wsSheet Is Nothing Then
+    Sheets(pivotSheetName).Select
+    Application.DisplayAlerts = False
+    ActiveWindow.SelectedSheets.Delete
+Else
+    'Do nothing
+End If
+    NewWorkSheet pivotSheetName, ""
+
+    Sheets(pivotSheetName).Select
+    Sheets(pivotSheetName).Activate
+
+    lastRow = getLastRow(sourceSheet)
+
+    Range("A2").FormulaR1C1 = pivotSheetName
+    Range("B4").Select
+
+DisplayPivots = lastRow
+
+End Function
