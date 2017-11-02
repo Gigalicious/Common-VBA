@@ -1,0 +1,19 @@
+Function NewWorkSheet(wkSheet As String, ext As String) As String
+
+Dim wsSheet As Worksheet
+
+Application.ScreenUpdating = False
+
+On Error Resume Next
+Set wsSheet = Sheets(Left(wkSheet + ext, 31))
+On Error GoTo 0
+If Not wsSheet Is Nothing Then
+' already exist, do nothing
+Else
+    On Error Resume Next
+    Worksheets.Add(After:=Worksheets(wkSheet)).Name = Left(wkSheet + ext, 31)
+    Worksheets.Add.Name = Left(wkSheet + ext, 31)
+End If
+
+NewWorkSheet = Left(wkSheet + ext, 31)
+End Function
