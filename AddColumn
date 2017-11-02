@@ -1,0 +1,17 @@
+Function AddColumn(wkSheet As String, columnName As String)
+Dim i, a As Long
+
+Application.ScreenUpdating = False
+
+ThisWorkbook.Worksheets(wkSheet).Activate
+
+If getColumNumber(wkSheet, columnName) = 0 Then
+
+With ThisWorkbook.Worksheets(wkSheet)
+i = getLastColumn(wkSheet)
+.Cells(1, i + 1).Value = columnName
+
+End With
+End If
+
+End Function
