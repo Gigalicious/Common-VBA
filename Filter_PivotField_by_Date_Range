@@ -1,0 +1,42 @@
+Public Function Filter_PivotField_by_Date_Range(pvtField As PivotField, _
+        dtFrom As Date, dtTo As Date)
+    Dim bTemp As Boolean, i As Long
+    Dim dtTemp As Date, sItem1 As String
+    
+    Application.ScreenUpdating = False
+    
+    On Error Resume Next
+ 
+    With pvtField
+        For i = 1 To .PivotItems.Count
+            dtTemp = .PivotItems(i)
+            bTemp = (dtTemp >= dtFrom) And _
+                (dtTemp <= dtTo)
+            If bTemp Then
+                sItem1 = .PivotItems(i)
+                Exit For
+            End If
+        Next i
+        If sItem1 = "" Then
+            MsgBox "No items are within the specified dates."
+            Exit Function
+        End If
+
+        Application.ScreenUpdating = False
+        Application.Calculation = xlCalculationManual
+
+       .Parent.ManualUpdate = True
+ 
+        If .Orientation = xlPageField Then .EnableMultiplePageItems = True
+        .PivotItems(sItem1).Visible = True
+        For i = 1 To .PivotItems.Count
+            dtTemp = .PivotItems(i)
+            If .PivotItems(i).Visible <> _
+                ((dtTemp >= dtFrom) And (dtTemp <= dtTo)) Then
+                .PivotItems(i).Visible = Not .PivotItems(i).Visible
+            End If
+        Next i
+    End With
+    
+    pvtField.Parent.ManualUpdate = False
+End Function
