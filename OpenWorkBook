@@ -1,0 +1,13 @@
+Function OpenWorkBook(fileName As String, filePath As String)
+Dim oBk As Workbook
+
+Application.ScreenUpdating = False
+
+On Error Resume Next
+Set oBk = Workbooks(fileName)
+On Error GoTo 0
+If oBk Is Nothing Then
+    Workbooks.Open fileName:=filePath, UpdateLinks:=0
+End If
+
+End Function
