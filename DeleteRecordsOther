@@ -1,0 +1,54 @@
+' This function deletes records in WorkSheet wkSheet based on values (sItem) NOT in
+' column sColumn.
+Function DeleteRecordsOther(wkSheet As String, sColumn As String, sItem As String)
+Dim i, a As Long
+Dim searchString As String
+Dim Placeholder As String
+
+Application.ScreenUpdating = False
+
+Placeholder = "none" ' by default, no placeholder * expected
+
+' if placeholder at the start, get string without placeholder and flag it
+If (InStr(1, sItem, "*", vbTextCompare) = 1) Then
+searchString = Right(sItem, Len(sItem) - 1)
+Placeholder = "left"
+' if placeholder at the start, get string without placeholder and flag it
+ElseIf (InStr(1, sItem, "*", vbTextCompare) = Len(sItem)) Then
+searchString = Left(sItem, Len(sItem) - 1)
+Placeholder = "right"
+
+End If
+
+ThisWorkbook.Worksheets(wkSheet).Activate
+
+Dim foundString As String
+
+With ThisWorkbook.Worksheets(wkSheet)
+    i = getColumNumber(wkSheet, sColumn)
+    
+    For a = getLastRow(wkSheet) To 2 Step -1
+        foundString = .Cells(a, i).Value
+        Select Case Placeholder ' check for flag
+            Case "left"
+                If (StrComp(Right(.Cells(a, i).Value, Len(sItem) - 1), searchString, vbTextCompare) <> 0) Then  ' check for the right side of the string with the length of the search value
+                    .Rows(CStr(a) + ":" + CStr(a)).Delete Shift:=xlUp
+                End If
+            Case "right"
+                If (StrComp(Left(.Cells(a, i).Value, Len(sItem) - 1), searchString, vbTextCompare) <> 0) Then ' check for the left side of the string with the length of the search value
+                    .Rows(CStr(a) + ":" + CStr(a)).Delete Shift:=xlUp
+                End If
+            Case "none" ' exact match
+                If (StrComp(.Cells(a, i).Value, sItem, vbTextCompare) <> 0) Then
+                    .Rows(CStr(a) + ":" + CStr(a)).Delete Shift:=xlUp
+                End If
+            Case Else
+                ' nothing
+        End Select
+    Next a
+    
+End With
+
+Application.ScreenUpdating = True
+
+End Function
